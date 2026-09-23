@@ -26,4 +26,3 @@ dist-ssr
 # Raw photo archive — optimised WebP in public/img/ is generated from these
 # by `npm run images`. Keep the originals, but they need not be in git.
 photos-source/
-public/img/
