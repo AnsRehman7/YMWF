@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette, taken from the YMWF logo: deep royal blue, cyan, and the
+     red of the outer ring. Nothing here is pure black — the darkest ink is a
+     deep navy so the whole site stays warm rather than harsh. */
+  --color-navy-50: #eef3fc;
+  --color-navy-100: #d9e4f8;
+  --color-navy-200: #b6ccf1;
+  --color-navy-300: #85a9e6;
+  --color-navy-400: #5480d6;
+  --color-navy-500: #315fc2;
+  --color-navy-600: #1b3b8f;
+  --color-navy-700: #17307a;
+  --color-navy-800: #16295c;
+  --color-navy-900: #101f47;
+  --color-navy-950: #0b1533;
+
+  --color-sky-brand-50: #eefaff;
+  --color-sky-brand-100: #d9f3ff;
+  --color-sky-brand-200: #b0e8ff;
+  --color-sky-brand-300: #6fd8fb;
+  --color-sky-brand-400: #29c1f0;
+  --color-sky-brand-500: #22a7c7;
+  --color-sky-brand-600: #0e84a6;
+  --color-sky-brand-700: #106986;
+
+  --color-coral-400: #ef4d52;
+  --color-coral-500: #d8232a;
+  --color-coral-600: #b81b21;
+
+  --color-amber-brand-400: #f7bb45;
+  --color-amber-brand-500: #f2a413;
+  --color-amber-brand-600: #d2860a;
+
+  /* Neutrals carry a faint blue bias so they sit with the brand blues. */
+  --color-slatey-50: #f6f8fc;
+  --color-slatey-100: #eef2f8;
+  --color-slatey-200: #dfe5ef;
+  --color-slatey-300: #c6d0e0;
+  --color-slatey-400: #94a1b8;
+  --color-slatey-500: #6b7896;
+  --color-slatey-600: #4d5975;
+  --color-slatey-700: #3a4560;
+
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Nothing may scroll the page sideways. `clip` rather than `hidden` so the
+     sticky sidebars on the programme and event pages keep working — `hidden`
+     would turn these into scroll containers and break them. */
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-slatey-700 antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-navy-900;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-sky-brand-500;
+  }
+
+  ::selection {
+    @apply bg-navy-600 text-white;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .eyebrow {
+    @apply font-display text-xs font-semibold tracking-[0.18em] text-sky-brand-600 uppercase;
+  }
+
+  /* Shared button geometry. Listed as one grouped selector rather than
+     @apply-ing `.btn` from each variant — Tailwind v4 cannot resolve a custom
+     class inside @apply. */
+  .btn,
+  .btn-primary,
+  .btn-accent,
+  .btn-ghost,
+  .btn-on-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-display text-sm font-semibold
+           transition-all duration-300 ease-out;
+  }
+
+  .btn-primary {
+    @apply bg-navy-600 text-white shadow-lg shadow-navy-600/20
+           hover:-translate-y-0.5 hover:bg-navy-700 hover:shadow-xl hover:shadow-navy-600/30;
+  }
+
+  .btn-accent {
+    @apply bg-coral-500 text-white shadow-lg shadow-coral-500/25
+           hover:-translate-y-0.5 hover:bg-coral-600 hover:shadow-xl hover:shadow-coral-500/30;
+  }
+
+  .btn-ghost {
+    @apply border border-slatey-300 bg-white/70 text-navy-700
+           hover:-translate-y-0.5 hover:border-navy-300 hover:bg-white hover:text-navy-900;
+  }
+
+  .btn-on-dark {
+    @apply border border-white/30 bg-white/10 text-white backdrop-blur-sm
+           hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/20;
+  }
+
+  .card,
+  .card-hover {
+    @apply rounded-2xl border border-slatey-200 bg-white transition-all duration-300 ease-out;
+  }
+
+  .card-hover {
+    @apply hover:-translate-y-1.5 hover:border-navy-200 hover:shadow-2xl hover:shadow-navy-900/10;
+  }
+
+  .urdu {
+    @apply font-urdu leading-[2.4];
+    direction: rtl;
+  }
+}
+
+/* Scroll-reveal: elements start shifted and fade in when observed. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-18px) scale(1.03);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-float-slow,
+  .animate-marquee {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
